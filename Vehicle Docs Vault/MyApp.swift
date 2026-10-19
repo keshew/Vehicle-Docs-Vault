@@ -1,9 +1,15 @@
 import SwiftUI
+import UserNotifications
 
-@main struct MyApp: App {
+@main
+@MainActor
+struct MyApp: App {
+    @StateObject private var store = VaultStore()
+    init() {
+        VaultAppearance.configure()
+        UNUserNotificationCenter.current().delegate = VaultNotificationDelegate.shared
+    }
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        WindowGroup { ContentView().environmentObject(store) }
     }
 }
